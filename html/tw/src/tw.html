@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TailWind Playground</title>
+    <link rel="stylesheet" href="../dist/output.css" />
+  </head>
+  <body>
+    <div class="grid grid-rows-4 grid-flow-col gap-4">
+      <div>01</div>
+      <!-- ... -->
+      <div>05</div>
+      <div class="grid grid-rows-subgrid gap-4 row-span-3">
+        <div class="bg-purple-300 row-start-2">06</div>
+      </div>
+      <div>07</div>
+      <!-- ... -->
+      <div>10</div>
+    </div>
+
+    <div class="h-36 flex mb-3 flex-col flex-wrap justify-around flex-auto">
+      <div class="bg-red-300 basis-3/4">111</div>
+      <div class="bg-blue-300 basis-1/4">222</div>
+      <div class="bg-yellow-300 basis-1/4">333</div>
+      <div class="bg-purple-300 basis-1/4">555</div>
+      <div class="bg-green-300 basis-1/4">777</div>
+    </div>
+
+    <div class="grid grid-cols-3 gap-3">
+      <div class="w-32 bg-red-300 order-1">111</div>
+      <div class="w-32 bg-blue-300 order-2">222</div>
+      <div class="w-32 bg-yellow-300 order-3">333</div>
+      <div class="w-32 bg-purple-300 order-4">444</div>
+      <div class="w-32 bg-green-300 order-5">555</div>
+    </div>
+    <div class="m-3 p-3">
+      <button
+        class="text-white bg-blue-500 hover:bg-blue-700 shadow-md px-2 rounded-md py-1 uppercase focus:ring focus:ring-blue-400 focus:ring-opacity-75"
+      >
+        BtnPrimary
+      </button>
+      <button class="btn btn-danger">BtnDanger</button>
+
+      <button class="btn btn-success">BtnSuccess</button>
+    </div>
+    <div
+      class="container mx-autox h-lvh w-full min-w-full bg-center"
+      style="
+        background-image: url('https://i.namu.wiki/i/d1A_wD4kuLHmOOFqJdVlOXVt1TWA9NfNt_HA0CS0Y_N0zayUAX8olMuv7odG2FiDLDQZIRBqbPQwBSArXfEJlQ.webp');
+      "
+    >
+      <h1 class="text-4xl text-white hover:text-black font-extrabold">Title</h1>
+
+      <div class="text-3xl w-full">Lorem ipsum dolor si</div>
+      <ul class="border border-red-300 m-3">
+        <li class="first:bg-red-500">111</li>
+        <li>222</li>
+        <li>333</li>
+      </ul>
+
+      <div
+        class="bg-gradient-to-t w via-black from-slate-300 to-blue-300 h-96 text-center"
+      >
+        <button
+          href="#"
+          class="w-96 h-60 bg-green-300 text-3xl hover:bg-green-100 transition-all duration-200 hover:animate-spin"
+        >
+          Animation
+        </button>
+        <button
+          href="#"
+          class="w-60 h-60 bg-blue-300 text-3xl hover:bg-blue-100 transition-all duration-200 hover:animate-spin"
+        >
+          Animation
+        </button>
+      </div>
+    </div>
+  </body>
+</html>
