@@ -147,3 +147,7 @@ function deepCopy() {
 }
 console.log("\n🚀 ~ deep Copy:");
 deepCopy();
+
+const obj = null;
+console.log(typeof obj);
+console.log(!obj);
