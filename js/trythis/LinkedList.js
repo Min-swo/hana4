@@ -11,16 +11,6 @@ class Collection {
     return this.#arr;
   }
 
-  //   [Symbol.iterator]() {
-  //     let idx = 0;
-  //     return {
-  //       next: () => ({
-  //         value: this.#arr[idx++],
-  //         done: idx > this.#arr.length,
-  //       }),
-  //     };
-  //   }
-
   iterator() {
     return this[Symbol.iterator]();
   }
@@ -32,7 +22,6 @@ class Collection {
   }
 
   clear() {
-    // this.#arr = []; //memory 새로 할당됨
     this.#arr.length = 0;
   }
 
@@ -55,7 +44,6 @@ class Collection {
   }
 
   poll() {
-    // if (this.constructor.name == "Stack") return this.#arr.pop();
     if (this instanceof Stack) return this.#arr.pop();
     else if (this instanceof Queue) return this.#arr.shift();
   }
@@ -65,17 +53,67 @@ class Collection {
   }
 }
 
-class List extends Collection {
+class ArrayList extends Collection {
+  start = {};
   constructor(...args) {
     super(...args);
-    start;
+    this.start = {
+      value: undefined,
+      rest: undefined,
+    };
+    args.forEach(this.add);
   }
 
-  add([index, value]) {
-    node = { val, rest };
-    start = start ?? node;
+  add(index, value) {
+    value ?? ([index, value] = [value, index]);
 
-    value = value ?? index;
-    // index =
+    const node = {
+      value: value,
+      rest: undefined,
+    };
+
+    this._arr.push(value);
+    let cur = this.start;
+    if (index == undefined) {
+      while (cur.rest != undefined) {
+        cur = cur.rest;
+      }
+      cur.rest = node;
+    } else {
+      // ToDo: index가 범위 밖을 때
+      for (let i = 0; i < index; i++) {
+        cur = cur.rest;
+      }
+      [cur.rest, node.rest] = [node, cur.rest];
+    }
+  }
+
+  get(index) {
+    let cur = this.start;
+    for (let i = 0; i <= index; i++) {
+      cur = cur.rest;
+    }
+    return cur.value;
+  }
+
+  remove(value) {
+    let cur = this.start;
+    while (true) {
+      cur = cur.rest;
+      if (cur.rest.value == value) break;
+    }
+    const tmp = cur.rest;
+    cur.rest = tmp.rest;
+    // Todo: delete tmp!
   }
 }
+
+const alist = new ArrayList();
+alist.add(3);
+console.log("🚀 ~ alist:", alist.start);
+alist.add(4);
+console.log("🚀 ~ alist:", alist.start);
+alist.add(1, 6);
+console.log("🚀 ~ alist:", alist.start);
+alist.add(0, 7);
+console.log("🚀 ~ alist:", alist.start);

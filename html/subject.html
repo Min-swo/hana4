@@ -11,10 +11,13 @@
       <label id="kor">요일을 선택하세요!</label>
     </div>
     <div style="margin-top: 1rem">
-      <button id="btnMath" onclick="setWeek('math')">
-        수학수업 요일 선택 &gt;
-      </button>
+      <button id="btnMath">수학수업 요일 선택 &gt;</button>
       <label id="math">요일을 선택하세요!</label>
+    </div>
+    <div style="margin-top: 1rem">
+      <form id="search">
+        <input type="text" class="boarder" />
+      </form>
     </div>
 
     <script>
@@ -42,21 +45,54 @@
           nextWeekFunction[subject]();
       };
 
+      const debounce = (cb, delay) => {
+        let timer;
+        return (...args) => {
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(cb, delay, ...args);
+        };
+      };
+
+      const throttle = (cb, delay) => {
+        let timer;
+        return (...args) => {
+          if (timer) return;
+          timer = setTimeout(() => {
+            cb(...args);
+            timer = null;
+          }, delay);
+        };
+      };
+
+      const dSetWeek = debounce(setWeek, 500);
+      const tSetWeek = throttle(setWeek, 500);
+      const dConsole = debounce(console.log, 500);
+
       window.addEventListener("load", () => {
         document.getElementById("btnKor").addEventListener("click", () => {
-          setWeek("kor");
+          event.preventDefault();
+          dSetWeek("kor");
         });
 
-        console.log("loaded!", btnKor);
+        document.getElementById("btnMath").addEventListener("click", () => {
+          event.preventDefault();
+          tSetWeek("math");
+        });
+
+        document.getElementById("search").addEventListener("input", () => {
+          event.preventDefault();
+          const d = new Date();
+          dConsole(`${d.toISOString()} Search>> ${event.target.value}`);
+        });
       });
 
-      let runCnt = 0;
-      const subjects = ["kor", "math"];
-      const intl = setInterval(() => {
-        runCnt += 1;
-        if (runCnt > 10) clearInterval(intl);
-        document.getElementById(`btn${subjects[runCnt % 2]}`).click();
-      }, 500);
+      // let runCnt = 0;
+      // const subjects = ["Kor", "Math"];
+      // const intl = setInterval(() => {
+      //   runCnt += 1;
+      //   if (runCnt > 10) clearInterval(intl);
+      //   document.getElementById(`btn${subjects[runCnt % 2]}`).click();
+      // }, 500);
     </script>
   </body>
 </html>
