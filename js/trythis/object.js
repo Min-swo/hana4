@@ -1,4 +1,4 @@
-const assert = require("assert");
+import assert from "assert";
 
 function getKeyIndexArray() {
   const arr = [100, 200, 300, 400, 500, 600, 700];

@@ -1,4 +1,4 @@
-const assert = require("assert");
+import assert from "assert";
 
 // const reduce = (arr, fn, initValue = arr[0]) => {
 //   let acc = initValue;

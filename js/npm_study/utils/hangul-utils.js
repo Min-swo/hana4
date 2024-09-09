@@ -1,4 +1,4 @@
-export default isEndJaum = (str) => {
+const isEndJaum = (str) => {
   const val = str.charCodeAt(str.length - 1);
   // ㄱ ~ ㅎ => true
   if ("ㄱ".charCodeAt(0) <= val && val <= "ㅎ".charCodeAt(0)) return true;
@@ -46,4 +46,4 @@ const eulul = (str) => {
   return isEndJaum(str) ? "을" : "를";
 };
 
-export { iga, eunun, eulul };
+export { isEndJaum, iga, eunun, eulul };

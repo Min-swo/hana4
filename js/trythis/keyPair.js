@@ -1,4 +1,4 @@
-const assert = require("assert");
+import assert from "assert";
 
 // 정렬을 해 7을 구하려고한다!
 // 21

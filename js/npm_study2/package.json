@@ -1,18 +1,15 @@
 {
-  "name": "hana4_js_npm",
-  "version": "1.0.3",
-  "description": "npm_study",
+  "name": "npm_study2",
+  "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",
-  "keywords": [
-    "JS"
-  ],
-  "author": "min-swo",
+  "author": "",
   "license": "ISC",
+  "description": "",
   "dependencies": {
-    "moment": "^2.30.1"
+    "hana4_js_npm": "^1.0.3"
   }
 }

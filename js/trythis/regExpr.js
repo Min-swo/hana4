@@ -32,7 +32,7 @@ function ex1() {
 ex1();
 
 function ex2() {
-  const assert = require("assert");
+  import assert from "assert";
 
   const isEndJaum = (str) => {
     const val = str.charCodeAt(str.length - 1);
@@ -106,7 +106,7 @@ function ex2() {
 ex2();
 
 function ex3() {
-  const assert = require("assert");
+  import assert from "assert";
 
   const ㄱ = "ㄱ".charCodeAt();
   const 초성 = [
@@ -192,7 +192,7 @@ function ex3() {
 ex3();
 
 function ex3_2() {
-  const assert = require("assert");
+  import assert from "assert";
 
   const ㄱ = "ㄱ".charCodeAt();
   const ㅎ = "ㅎ".charCodeAt();

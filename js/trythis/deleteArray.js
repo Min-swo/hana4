@@ -1,4 +1,4 @@
-const assert = require("assert");
+import assert from "assert";
 
 // const deleteArray = (arr, ...args) => {
 //   if (!args.some((a) => !Number.isInteger(a))) {
