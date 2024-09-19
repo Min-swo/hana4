@@ -30,11 +30,18 @@ const promiseAllSettled = (pArr) => {
     for (let i = 0; i < pArr.length; i += 1) {
       pArr[i]
         .then((succ) => {
-          results[i] = succ;
+          results[i] = {
+            status: "fulfilled",
+            value: succ,
+          };
 
           if ((cntToRun -= 1) === 0) resolve(results);
         })
         .catch((error) => {
+          results[i] = {
+            status: "rejected",
+            reason: error,
+          };
           console.log(error);
           if ((cntToRun -= 1) === 0) resolve(results);
         });
@@ -44,26 +51,26 @@ const promiseAllSettled = (pArr) => {
 
 console.time("first");
 
-promiseAll([randTime(1), randTime(2), randTime(3)])
-  .then((arr) => {
-    console.table(arr);
-    console.timeEnd("first");
-    assert.deepStrictEqual(arr, vals);
-  })
-  .catch(console.error);
+// promiseAll([randTime(1), randTime(2), randTime(3)])
+//   .then((arr) => {
+//     console.table(arr);
+//     console.timeEnd("first");
+//     assert.deepStrictEqual(arr, vals);
+//   })
+//   .catch(console.error);
 
-promiseAll([randTime(11), Promise.reject("RRR"), randTime(33)])
-  .then((array) => {
-    console.log("여긴 과연 호출될까?!");
-  })
-  .catch((error) => {
-    console.log("reject!!!!!!>>", error);
-  });
+// promiseAll([randTime(11), Promise.reject("RRR"), randTime(33)])
+//   .then((array) => {
+//     console.log("여긴 과연 호출될까?!");
+//   })
+//   .catch((error) => {
+//     console.log("reject!!!!!!>>", error);
+//   });
 
 promiseAllSettled([randTime(11), Promise.reject("RRR"), randTime(33)])
   .then((array) => {
-    console.table(array);
-    console.log("여긴 과연 호출될까?!");
+    console.log(array);
+    // console.log("여긴 과연 호출될까?!");
   })
   .catch((error) => {
     console.log("reject!!!!!!>>", error);

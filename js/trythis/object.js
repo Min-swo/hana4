@@ -139,11 +139,11 @@ function deepCopy() {
 
   const kim = { nid: 3, nm: "Kim", addr: { city: "Pusan" } };
   const newKim = copyObject(kim);
-  newKim.addr.city = "Daegu";
+  // newKim.addr.city = "Daegu";
 
-  console.log(kim.addr !== newKim.addr);
-  console.log("kim:", kim);
-  console.log("newKim:", newKim);
+  // console.log(kim.addr !== newKim.addr);
+  // console.log("kim:", kim);
+  // console.log("newKim:", newKim);
 }
 console.log("\n🚀 ~ deep Copy:");
 deepCopy();

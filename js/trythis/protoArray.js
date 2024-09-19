@@ -69,15 +69,17 @@ const kim = { id: 2, name: "Kim" };
 const lee = { id: 3, name: "Lee" };
 const users = [hong, lee, kim]; // 오염되면 안됨!!
 
-assert.deepStrictEqual(users.mapBy("id"), [1, 3, 2]);
-assert.deepStrictEqual(users.mapBy("name"), ["Hong", "Lee", "Kim"]);
+// assert.deepStrictEqual(users.mapBy("id"), [1, 3, 2]);
+// assert.deepStrictEqual(users.mapBy("name"), ["Hong", "Lee", "Kim"]);
 
-assert.deepStrictEqual(users.filterBy("id", 2), [kim]);
-assert.deepStrictEqual(users.rejectBy("id", 2), [hong, lee]);
+// assert.deepStrictEqual(users.filterBy("id", 2), [kim]);
+// assert.deepStrictEqual(users.rejectBy("id", 2), [hong, lee]);
 
-assert.deepStrictEqual(users.findBy("name", "Kim"), kim);
+// assert.deepStrictEqual(users.findBy("name", "Kim"), kim);
 
 assert.deepStrictEqual(users.sortBy("name"), [hong, kim, lee]);
+console.log(users.sortBy("name:desc"));
+
 // assert.deepStrictEqual(users.sortBy("name:desc"), [lee, kim, hong]);
 
 // assert.deepStrictEqual(users.firstObject, hong);
