@@ -52,7 +52,7 @@ function ex3() {
     [key in keyof Users[number]]: Users[number][key];
   };
 
-  const ret: FullUser = users.reduce((acc, user) => ({ ...acc, ...user }), {});
+  const ret: FullUser1 = users.reduce((acc, user) => ({ ...acc, ...user }), {});
 }
 
 function ex4() {
