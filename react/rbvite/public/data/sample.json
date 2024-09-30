@@ -1,8 +1,8 @@
 {
   "loginUser": { "id": 777, "name": "KAM" },
   "cart": [
-    { "id": 100, "name": "라면1", "price": 3000 },
-    { "id": 101, "name": "컵라면2", "price": 2000 },
-    { "id": 102, "name": "파3", "price": 5000 }
+    { "id": 100, "name": "라면1", "price": 3000, "sale": 0.1 },
+    { "id": 101, "name": "컵라면2", "price": 2000, "sale": 0.5 },
+    { "id": 102, "name": "파3", "price": 5000, "sale": 0.2 }
   ]
 }

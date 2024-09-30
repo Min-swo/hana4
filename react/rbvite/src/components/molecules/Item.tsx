@@ -8,9 +8,11 @@ type Props = {
   id: number;
   name: string;
   price: number;
+  sale: number;
+  search: string;
 };
 
-export default function Item({ id, name, price }: Props) {
+export default function Item({ id, name, price, sale, search }: Props) {
   const { removeCartItem, updateCartItem } = useSession();
 
   const [edit, setEdit] = useState(false);
@@ -101,34 +103,59 @@ export default function Item({ id, name, price }: Props) {
     </form>
   );
 
+  const ㄱㄴㄷ = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
+  const 가나다 = '가까나다따라마바빠사싸아자짜차카타파하';
+
+  const searchByKoreanInitialSound = (data: string, firstSounds: string) => {
+    const r = [...firstSounds].map((a) => {
+      const idx = ㄱㄴㄷ.indexOf(a);
+      if (idx === -1) return a;
+      const S = 가나다.at(idx);
+      const E = (가나다.at(idx + 1) || '').charCodeAt(0) - 1;
+      return `[${a}${S}-${String.fromCharCode(E)}]`;
+    });
+
+    // console.log('rrr>>', r.join(''));
+    const regex = new RegExp(r.join(''));
+    return regex.test(data);
+  };
+
   return (
     <>
-      <div className='m-1 flex flex-row justify-between text-xs'>
-        <div className='flex w-1/2 flex-row items-center justify-around'>
-          <div className='font-semibold text-gray-300'>{id}. </div>
-          <div className='font-semibold'>{name}</div>
-          <div className='text-xs'>({price.toLocaleString()}원)</div>
-        </div>
-        <div className='flex flex-row'>
-          <Button
-            classNames='btn-primary mx-1 h-auto w-auto text-xs'
-            onClick={toggleEdit}
-          >
-            {edit ? <FaTimes /> : <FaPen />}
-          </Button>
+      {(search === '' || searchByKoreanInitialSound(name, search)) && (
+        <div className='m-1 flex flex-row justify-between text-xs'>
+          <div className='flex w-3/4 flex-row items-center justify-start gap-3'>
+            <div className='flex w-1/2 flex-row items-center justify-start gap-3'>
+              <div className='font-semibold text-gray-300'>{id}. </div>
+              <div className='font-semibold'>{name}</div>
+            </div>
+            <div className='text-xs'>정상가: ({price.toLocaleString()}원)</div>
+            <div className='text-xs'>
+              할인가: ({(price * (1 - sale)).toLocaleString()}원)
+            </div>
+          </div>
+          <div className='flex flex-row'>
+            <Button
+              classNames='btn-primary mx-1 h-auto w-auto text-xs'
+              onClick={toggleEdit}
+            >
+              {edit ? <FaTimes /> : <FaPen />}
+            </Button>
 
-          <Button
-            classNames='btn-danger mx-1 h-auto w-auto text-xs'
-            onClick={() => {
-              if (confirm('Are u sure?')) {
-                removeCartItem(id);
-              }
-            }}
-          >
-            <FaRegTrashCan />
-          </Button>
+            <Button
+              classNames='btn-danger mx-1 h-auto w-auto text-xs'
+              onClick={() => {
+                if (confirm('Are u sure?')) {
+                  removeCartItem(id);
+                }
+              }}
+            >
+              <FaRegTrashCan />
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
+
       {edit && EditingInp(id, name, price)}
     </>
   );

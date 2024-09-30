@@ -5,7 +5,7 @@ import { useSession } from '../hooks/session-context';
 function Profile(_: unknown, ref: ForwardedRef<HTMLButtonElement>) {
   const { session, logout } = useSession();
   return (
-    <div className='flex flex-col items-center justify-center'>
+    <div className='flex-col-center'>
       <h3>{session.loginUser?.name} Logined</h3>
       <button onClick={logout} ref={ref} className='btn btn-primary'>
         Sign Out

@@ -7,8 +7,8 @@ import {
 } from 'react';
 import Button from './atoms/Button';
 import LabelInput from './molecules/LabelInput';
+import { useInterval, useTimeout } from '../hooks/timer-hooks';
 // import { useCounter } from '../hooks/counter-context';
-// import useTimer from '../hooks/timer-hooks';
 
 export type LoginHandler = {
   focus: (prop: string) => void;
@@ -23,7 +23,6 @@ export default forwardRef(function Login(
   ref: ForwardedRef<LoginHandler>
 ) {
   // const { plusCount } = useCounter();
-  // const { useTimeout, useInterval } = useTimer();
 
   const idRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
@@ -79,41 +78,26 @@ export default forwardRef(function Login(
   //   setName(e.currentTarget.value);
   // };
 
+  const { clear } = useInterval(() => console.log('X'), 1000);
+  const { reset } = useTimeout(
+    (name) => console.log(`Hello, ${name}!!!`),
+    3000,
+    'Hong'
+  );
+
   return (
-    <form onSubmit={signIn} className='w-1/2 border p-4 text-xs'>
-      <LabelInput label='ID' type='number' ref={idRef} />
+    <>
+      <form onSubmit={signIn} className='w-1/2 border p-4 text-xs'>
+        <LabelInput label='ID' type='number' ref={idRef} />
 
-      <LabelInput label='Name' type='text' ref={nameRef} />
+        <LabelInput label='Name' type='text' ref={nameRef} />
 
-      {/* <div className='flex'>
-        <label htmlFor='id' className='w-24'>
-          ID:
-        </label>
-        <input
-          id='id'
-          type='number'
-          placeholder='ID...'
-          className='inp mb-3'
-          // onChange={(e) => setId(+e.currentTarget.value)}
-        />
-      </div> */}
-      {/* <div className='flex'>
-        <label htmlFor='name' className='w-24'>
-          Name:
-        </label>
-        <input
-          id='name'
-          type='text'
-          autoComplete='off'
-          placeholder='Name...'
-          className='inp'
-          // onChange={(e) => setName(e.currentTarget.value)}
-        />
-      </div> */}
-      {/* <button className='btn btn-success float-end mt-3'>Sign In</button> */}
-      <Button variant='btn-success' classNames='float-end mt-3'>
-        Sign In
-      </Button>
-    </form>
+        <Button variant='btn-success' classNames='float-end mt-3'>
+          Sign In
+        </Button>
+      </form>
+      <Button onClick={reset}>Reset Timeout</Button>
+      <Button onClick={clear}>Clear Interval</Button>
+    </>
   );
 });

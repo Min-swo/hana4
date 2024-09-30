@@ -7,6 +7,8 @@ import {
 } from 'react';
 import { useCounter } from '../hooks/counter-context';
 import { useSession } from '../hooks/session-context';
+import { useFetch } from '../hooks/fetch-hooks';
+import { FaSpinner } from 'react-icons/fa';
 
 type TitleProps = {
   text: string;
@@ -47,18 +49,21 @@ const Body = ({ children }: { children: ReactNode }) => {
 // }
 
 type Props = {
-  age: number;
+  friend: number;
 };
 
 export type myHandler = { jumpHelloState: () => void };
 
-function Hello({ age }: Props, ref: ForwardedRef<myHandler>) {
+type PlaceUser = { id: number; name: string; username: string; email: string };
+
+function Hello({ friend }: Props, ref: ForwardedRef<myHandler>) {
   // const [myState, setMyState] = useState(() => new Date().getTime());
   const { count, plusCount, minusCount } = useCounter();
   const [myState, setMyState] = useState(0);
   const {
     session: { loginUser },
   } = useSession();
+
   let v = 1;
   const name = loginUser?.name ?? '';
   const handler = {
@@ -66,28 +71,53 @@ function Hello({ age }: Props, ref: ForwardedRef<myHandler>) {
   };
   useImperativeHandle(ref, () => handler);
 
+  const BASEURL = `https://jsonplaceholder.typicode.com/users/${friend}`;
+  const {
+    data: friendInfo,
+    load,
+    error,
+  } = useFetch<PlaceUser>(BASEURL, true, [friend]);
+
   return (
-    <div className='my-5 border border-slate-300 p-3'>
+    <div className='flex-col-center my-5 border border-slate-300 p-3'>
       <Title text='Hello~' name={name} />
       <Body>
-        <h3 className='text-semibold text-2xl'>myState: {myState}</h3>
-        This is Hello Body Component. {v} - {age}
+        <div className='text-semibold flex-col-center text-2xl'>
+          myState: {myState}
+        </div>
+        This is Hello Body Component. {v} - {friend}
+        <div className='flex-col-center'>
+          {load ? (
+            <div className='flex-col-center'>
+              <FaSpinner className='animate-spin text-3xl' />
+            </div>
+          ) : error ? (
+            <strong className='text-red-500'>
+              {error.message && error.message.startsWith('404')
+                ? `Your friend is not found(${friend})`
+                : error.message}
+            </strong>
+          ) : (
+            <strong>My friend is {friendInfo?.username}.</strong>
+          )}
+        </div>
       </Body>
-      <button
-        onClick={() => {
-          v++;
-          setMyState(myState + 1);
-          plusCount();
-          // console.log('v/myState=', v, myState);
-        }}
-        className='btn'
-      >
-        Hello
-      </button>
-      <strong className='mx-5'>{count}</strong>
-      <button onClick={() => minusCount()} className='btn btn-danger'>
-        Minus
-      </button>
+      <div className='flex flex-row justify-center'>
+        <button
+          onClick={() => {
+            v++;
+            setMyState(myState + 1);
+            plusCount();
+          }}
+          className='btn'
+        >
+          Hello
+        </button>
+        <strong className='mx-5'>{count}</strong>
+        <button onClick={() => minusCount()} className='btn btn-danger'>
+          Minus
+        </button>
+      </div>
     </div>
   );
 }

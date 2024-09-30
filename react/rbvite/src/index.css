@@ -24,6 +24,14 @@
   .btn-success {
     @apply bg-green-600 text-white hover:bg-green-700 focus:ring-green-400;
   }
+
+  .flex-col-center {
+    @apply flex flex-col items-center justify-center;
+  }
+
+  .flex-row-center {
+    @apply flex flex-row items-center justify-center;
+  }
 }
 
 /* :root {
