@@ -5,15 +5,17 @@ import {
   SetStateAction,
   useContext,
   useLayoutEffect,
-  useReducer,
   useRef,
-  useState,
 } from 'react';
 import { LoginHandler } from '../components/Login';
 import { useFetch } from './fetch-hooks';
+import useMyReducer from '../libs/myReducer';
+import useMyState from '../libs/myState';
+
+const SKEY = 'session1';
 
 // const defaultSession = { loginUser: null, cart: [] };
-const defaultSession = {
+const defaultSession: Session = {
   loginUser: null,
   cart: [],
 };
@@ -85,41 +87,71 @@ type Action =
   | updateCartAction;
 
 const reducer = (session: Session, { type, payload }: Action) => {
+  let cartStorage: Session;
+  let userStorage: Session;
+
   switch (type) {
     case 'updateSession':
-      return { ...payload };
+      return payload;
     case 'login':
-      return { ...session, loginUser: payload };
+      userStorage = { ...session, loginUser: payload };
+      sessionStorage.setItem(SKEY, JSON.stringify(userStorage.loginUser));
+      return userStorage;
     case 'logout':
-      return { ...session, loginUser: payload };
+      userStorage = { ...session, loginUser: null };
+      sessionStorage.setItem(SKEY, JSON.stringify(userStorage.loginUser));
+      return userStorage;
     case 'addCart':
-      return { ...session, cart: [...session.cart, payload] };
+      cartStorage = { ...session, cart: [...session.cart, payload] };
+      break;
     case 'removeCart':
-      return {
+      cartStorage = {
         ...session,
-        cart: session.cart.filter((item) => item.id !== payload),
+        cart: session.cart.filter(({ id }) => id !== payload),
       };
-    case 'updateCart': {
-      const idx = session.cart.findIndex((item) => item.id === payload.id);
-      if (idx === -1) return { ...session };
-      session.cart[idx] = payload;
-      return { ...session, cart: [...session.cart] };
-    }
+      break;
+    case 'updateCart':
+      cartStorage = {
+        ...session,
+        cart: session.cart.map((oldItem) =>
+          oldItem.id === payload.id ? payload : oldItem
+        ),
+      };
+      break;
     default:
       return session;
   }
+
+  if (cartStorage) {
+    localStorage.setItem(SKEY, JSON.stringify(cartStorage.cart));
+    console.log('🚀 ~ reducer ~ sess.cart:', cartStorage.cart);
+  }
+
+  return cartStorage;
 };
 
 export const SessionProvider = ({ children }: PropsWithChildren) => {
-  const [session, dispatch] = useReducer(reducer, defaultSession);
-  const [reload, setReload] = useState(0);
+  const [session, dispatchSession] = useMyReducer(reducer, defaultSession);
+  const [reload, setReload] = useMyState(0);
 
   const { data } =
     useFetch<Session>('/data/sample.json', true, [reload]) || defaultSession;
 
   useLayoutEffect(() => {
-    dispatch({ type: 'updateSession', payload: data || defaultSession });
-  }, [data]);
+    const loginUser = JSON.parse(
+      sessionStorage.getItem(SKEY) || 'null'
+    ) as LoginUser;
+    console.log('🚀 ~ useLayoutEffect ~ loginUser:', loginUser);
+
+    const cart = JSON.parse(localStorage.getItem(SKEY) || 'null') as CartItem[];
+    console.log('🚀 ~ useLayoutEffect ~ cart:', cart);
+
+    const savedData = loginUser || cart ? { loginUser, cart } : null;
+    dispatchSession({
+      type: 'updateSession',
+      payload: savedData || data || defaultSession,
+    });
+  }, [data, dispatchSession]);
 
   const loginRef = useRef<LoginHandler>(null);
 
@@ -132,21 +164,24 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
       alert('Name을 입력하세요!');
       return loginRef.current?.focus('name');
     }
-    dispatch({ type: 'login', payload: { id: +id, name } });
+    dispatchSession({ type: 'login', payload: { id: +id, name } });
   };
 
-  const logout = () => dispatch({ type: 'logout', payload: null });
+  const logout = () => dispatchSession({ type: 'logout', payload: null });
 
   const addCartItem = (name: string, price: number) => {
     const id = Math.max(...session.cart.map(({ id }) => id), 0) + 1;
-    dispatch({ type: 'addCart', payload: { id, name, price, sale: 0 } });
+    dispatchSession({ type: 'addCart', payload: { id, name, price, sale: 0 } });
   };
 
   const removeCartItem = (id: number) =>
-    dispatch({ type: 'removeCart', payload: id });
+    dispatchSession({ type: 'removeCart', payload: id });
 
   const updateCartItem = (id: number, name: string, price: number) => {
-    dispatch({ type: 'updateCart', payload: { id, name, price, sale: 0 } });
+    dispatchSession({
+      type: 'updateCart',
+      payload: { id, name, price, sale: 0 },
+    });
   };
 
   return (

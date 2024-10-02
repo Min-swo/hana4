@@ -7,7 +7,7 @@ import {
 } from 'react';
 import Button from './atoms/Button';
 import LabelInput from './molecules/LabelInput';
-import { useInterval, useTimeout } from '../hooks/timer-hooks';
+// import { useInterval, useTimeout } from '../hooks/timer-hooks';
 // import { useCounter } from '../hooks/counter-context';
 
 export type LoginHandler = {
@@ -78,16 +78,16 @@ export default forwardRef(function Login(
   //   setName(e.currentTarget.value);
   // };
 
-  const { clear } = useInterval(() => console.log('X'), 1000);
-  const { reset } = useTimeout(
-    (name) => console.log(`Hello, ${name}!!!`),
-    3000,
-    'Hong'
-  );
+  // const { clear } = useInterval(() => console.log('X'), 1000);
+  // const { reset } = useTimeout(
+  //   (name) => console.log(`Hello, ${name}!!!`),
+  //   3000,
+  //   'Hong'
+  // );
 
   return (
     <>
-      <form onSubmit={signIn} className='w-1/2 border p-4 text-xs'>
+      <form onSubmit={signIn} className='p-4 text-xs'>
         <LabelInput label='ID' type='number' ref={idRef} />
 
         <LabelInput label='Name' type='text' ref={nameRef} />
@@ -96,8 +96,8 @@ export default forwardRef(function Login(
           Sign In
         </Button>
       </form>
-      <Button onClick={reset}>Reset Timeout</Button>
-      <Button onClick={clear}>Clear Interval</Button>
+      {/* <Button onClick={reset}>Reset Timeout</Button> */}
+      {/* <Button onClick={clear}>Clear Interval</Button> */}
     </>
   );
 });

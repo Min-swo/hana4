@@ -129,9 +129,9 @@ export default function Item({ id, name, price, sale, search }: Props) {
               <div className='font-semibold text-gray-300'>{id}. </div>
               <div className='font-semibold'>{name}</div>
             </div>
-            <div className='text-xs'>정상가: ({price.toLocaleString()}원)</div>
+            <div className='text-xs'>정상가: ({price?.toLocaleString()}원)</div>
             <div className='text-xs'>
-              할인가: ({(price * (1 - sale)).toLocaleString()}원)
+              할인가: ({(price * (1 - sale))?.toLocaleString()}원)
             </div>
           </div>
           <div className='flex flex-row'>

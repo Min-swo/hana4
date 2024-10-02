@@ -9,6 +9,7 @@ import { useSession } from '../hooks/session-context.tsx';
 import Item from './molecules/Item.tsx';
 import useToggle from '../hooks/toggle.ts';
 import { useDebounce } from '../hooks/timer-hooks.ts';
+import clsx from 'clsx';
 
 export default function My() {
   const { session, reload, setReload, loginRef, login, addCartItem } =
@@ -113,19 +114,25 @@ export default function My() {
 
   return (
     <>
-      {session.loginUser ? (
-        <div className='flex w-1/2 flex-col items-center justify-center border p-1'>
-          <Profile ref={logoutButtonRef} />
-          <Button
-            onClick={() => logoutButtonRef.current?.click()}
-            classNames='m-2'
-          >
-            MySignOut
-          </Button>
-        </div>
-      ) : (
-        <Login login={login} ref={loginRef} />
-      )}
+      <div
+        className={clsx(
+          !session.loginUser && 'w-1/2 border-2 border-green-600 p-2'
+        )}
+      >
+        {session.loginUser ? (
+          <div className='flex flex-col items-center justify-center p-1'>
+            <Profile ref={logoutButtonRef} />
+            <Button
+              onClick={() => logoutButtonRef.current?.click()}
+              classNames='m-2'
+            >
+              MySignOut
+            </Button>
+          </div>
+        ) : (
+          <Login login={login} ref={loginRef} />
+        )}
+      </div>
 
       <div className='my-3 flex w-1/2 flex-col items-center justify-center border p-1'>
         <div className='flex-row-center w-full gap-2 p-1'>
@@ -164,12 +171,13 @@ export default function My() {
       </div>
       <div className='flex w-1/2 flex-row justify-between'>
         <div>
-          totalOriginalPrice: {totalOriginalPrice.toFixed(0).toLocaleString()}원
+          totalOriginalPrice: {totalOriginalPrice.toFixed(0)?.toLocaleString()}
+          원
         </div>
         <div>
-          totalSalePrice: {totalSalePrice.toFixed(0).toLocaleString()}원
+          totalSalePrice: {totalSalePrice.toFixed(0)?.toLocaleString()}원
         </div>
-        <div>totalSale : {totalSale.toFixed(0).toLocaleString()}원</div>
+        <div>totalSale : {totalSale.toFixed(0)?.toLocaleString()}원</div>
       </div>
 
       <Button

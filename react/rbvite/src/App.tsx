@@ -1,17 +1,19 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import Hello, { myHandler } from './components/Hello';
 import My from './components/My';
 import { useDebounce } from './hooks/timer-hooks';
+import useMyState from './libs/myState';
 
 function App() {
-  const [friend, setFriend] = useState(0);
-  const [, setTmp] = useState(0);
+  const [friend, setFriend] = useMyState(0);
+  const [, setTmp] = useMyState(0);
   const myHandleRef = useRef<myHandler>(null);
   const friendRef = useRef<HTMLInputElement>(null);
 
   useDebounce(
     () => {
       setFriend(+(friendRef.current?.value || 0));
+      // setFriend((prev) => prev + 1);
     },
     1000,
     [friendRef.current?.value]
