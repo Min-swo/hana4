@@ -1,22 +1,22 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useSession } from '../hooks/session-context';
-// import { useState } from 'react';
-// import Button from './atoms/Button';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import Button from './atoms/Button';
 
 export default function ItemLayout() {
   const {
     session: { cart },
   } = useSession();
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  // const [currItem, setCurrItem] = useState(cart[0]);
+  const [currItem, setCurrItem] = useState(cart[0]);
 
-  // const goItem = (id: number) => {
-  //   setCurrItem(cart.find(({ id: itemId }) => id === Number(itemId))!);
-  //   navigate(`${id}`);
-  // };
+  const goItem = (id: number) => {
+    setCurrItem(cart.find(({ id: itemId }) => id === Number(itemId))!);
+    navigate(`${id}`);
+  };
 
   return (
     <div className='flex w-full flex-row justify-between'>
@@ -24,15 +24,15 @@ export default function ItemLayout() {
         <ul>
           {cart.map(({ id, name }) => (
             <li key={id}>
-              <Link to={`/items/${id}`}>{name}</Link>
-              {/* <Button onClick={() => goItem(id)}>{name}</Button> */}
+              {/* <Link to={`/items/${id}`}>{name}</Link> */}
+              <Button onClick={() => goItem(id)}>{name}</Button>
             </li>
           ))}
         </ul>
       </div>
       <div className='w-1/2 border text-center'>
-        <Outlet />
-        {/* <Outlet context={currItem} /> */}
+        {/* <Outlet /> */}
+        <Outlet context={currItem} />
       </div>
     </div>
   );

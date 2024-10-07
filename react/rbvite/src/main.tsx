@@ -9,11 +9,13 @@ import { HashRouter } from 'react-router-dom';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <CounterProvider>
+      {/* <BrowserRouter> */}
       <HashRouter>
         <SessionProvider>
           <App />
         </SessionProvider>
       </HashRouter>
+      {/* </BrowserRouter> */}
     </CounterProvider>
   </StrictMode>
 );
