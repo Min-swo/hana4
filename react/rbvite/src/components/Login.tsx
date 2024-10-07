@@ -1,27 +1,17 @@
-import {
-  FormEvent,
-  ForwardedRef,
-  forwardRef,
-  useImperativeHandle,
-  useRef,
-} from 'react';
+import { FormEvent, forwardRef, useImperativeHandle, useRef } from 'react';
 import Button from './atoms/Button';
 import LabelInput from './molecules/LabelInput';
-// import { useInterval, useTimeout } from '../hooks/timer-hooks';
-// import { useCounter } from '../hooks/counter-context';
+import { useSession } from '../hooks/session-context';
+import { useNavigate } from 'react-router-dom';
 
 export type LoginHandler = {
   focus: (prop: string) => void;
 };
 
-export default forwardRef(function Login(
-  {
-    login,
-  }: {
-    login: (id: number, name: string) => void;
-  },
-  ref: ForwardedRef<LoginHandler>
-) {
+export default forwardRef(function Login() {
+  const { login, loginRef } = useSession();
+  const navigate = useNavigate();
+
   // const { plusCount } = useCounter();
 
   const idRef = useRef<HTMLInputElement>(null);
@@ -33,13 +23,14 @@ export default forwardRef(function Login(
       else if (prop === 'name') nameRef.current?.focus();
     },
   };
-  useImperativeHandle(ref, () => handler);
+  useImperativeHandle(loginRef, () => handler);
 
   const signIn = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const id = idRef.current?.value ?? 0;
     const name = nameRef.current?.value ?? '';
     login(+id, name);
+    navigate('/my');
   };
 
   // useEffect(() => {

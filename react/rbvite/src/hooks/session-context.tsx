@@ -21,7 +21,12 @@ const defaultSession: Session = {
 };
 
 type LoginUser = { id: number; name: string };
-type CartItem = { id: number; name: string; price: number; sale: number };
+export type CartItem = {
+  id: number;
+  name: string;
+  price: number;
+  sale: number;
+};
 export type Session = { loginUser: LoginUser | null; cart: CartItem[] };
 
 type SessionContextProps = {

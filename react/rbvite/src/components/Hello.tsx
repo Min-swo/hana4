@@ -49,14 +49,14 @@ const Body = ({ children }: { children: ReactNode }) => {
 // }
 
 type Props = {
-  friend: number;
+  friend?: number;
 };
 
 export type myHandler = { jumpHelloState: () => void };
 
 type PlaceUser = { id: number; name: string; username: string; email: string };
 
-function Hello({ friend }: Props, ref: ForwardedRef<myHandler>) {
+function Hello({ friend = 0 }: Props, ref: ForwardedRef<myHandler>) {
   // const [myState, setMyState] = useState(() => new Date().getTime());
   const { count, plusCount, minusCount } = useCounter();
   const [myState, setMyState] = useState(0);
